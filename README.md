@@ -1,8 +1,5 @@
 # intel-gpu-exporter
 
-> [!IMPORTANT]
-> I am no longer using this, and have no plans to continue support. Please consider forking if interested in using.
-
 Get metrics from Intel GPUs
 
 ## Deployment
@@ -16,7 +13,7 @@ version: "3.8"
 
 services:
   intel-gpu-exporter:
-    image: ghcr.io/onedr0p/intel-gpu-exporter:rolling
+    image: ghcr.io/tomekbielaszewski/intel-gpu-exporter:latest
     container_name: intel-gpu-exporter
     restart: unless-stopped
     privileged: true
