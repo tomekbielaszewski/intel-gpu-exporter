@@ -23,7 +23,7 @@ services:
     volumes:
       - /dev/dri/:/dev/dri/
 ```
-
+ 
 ## Metrics
 
 ```bash
