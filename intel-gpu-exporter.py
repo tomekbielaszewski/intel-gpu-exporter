@@ -145,12 +145,12 @@ if __name__ == "__main__":
         logging.info("Running in Docker environment")
         for line in process.stdout:
             line = line.decode("utf-8")
-            logging.info(line)
+            logging.info("\"" + line + "\"")
 
-            if line != "[":
+            if line != "[\n":
                 output += line
 
-            if line == "}":
+            if line == "}\n":
                 try:
                     data = json.loads(output)
                     logging.info(data)
