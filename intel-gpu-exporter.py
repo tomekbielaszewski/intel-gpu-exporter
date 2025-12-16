@@ -145,16 +145,18 @@ if __name__ == "__main__":
         logging.info("Running in Docker environment")
         for line in process.stdout:
             line = line.decode("utf-8").strip()
-            logging.info("\"" + line + "\"")
-            output += line
 
-            try:
-                data = json.loads(output.strip(","))
-                logging.debug(data)
-                update(data)
-                output = ""
-            except json.JSONDecodeError:
-                continue
+            if line == "{": # reset collecting cmd output JSON and start new one
+                output = line
+            if line == "}": # flush the cmd output and post metrics
+                try:
+                    data = json.loads(output)
+                    logging.debug(data)
+                    update(data)
+                except json.decoder.JSONDecodeError:
+                    continue
+            else: # not a start nor end of JSON - continue collecting cmd output
+                output += line
     else:
         logging.info("Running in host environment")
         while process.poll() is None:
