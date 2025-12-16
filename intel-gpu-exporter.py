@@ -140,30 +140,26 @@ if __name__ == "__main__":
 
     logging.info("Started " + cmd)
     output = ""
-    depth = 0
 
     if os.getenv("IS_DOCKER", False):
         logging.info("Running in Docker environment")
         for line in process.stdout:
-            line = line.decode("utf-8").strip()
+            line = line.decode("utf-8")
+            logging.info(line)
 
             if line != "[":
                 output += line
 
-            if line == "{":
-                depth += 1
             if line == "}":
-                depth -= 1
-                if depth == 0:
-                    try:
-                        data = json.loads(output)
-                        logging.info(data)
-                        update(data)
-                        output = ""
-                        logging.info("Metrics updated")
-                    except json.decoder.JSONDecodeError:
-                        logging.error("JSON decode error: " + output)
-                        continue
+                try:
+                    data = json.loads(output)
+                    logging.info(data)
+                    update(data)
+                    output = ""
+                    logging.info("Metrics updated")
+                except json.decoder.JSONDecodeError:
+                    logging.error("JSON decode error: " + output)
+                    continue
 
     else:
         logging.info("Running in host environment")
