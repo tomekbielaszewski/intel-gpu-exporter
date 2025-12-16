@@ -151,7 +151,7 @@ if __name__ == "__main__":
             if line == "}": # flush the cmd output and post metrics
                 try:
                     data = json.loads(output)
-                    logging.debug(data)
+                    logging.info(data)
                     update(data)
                 except json.decoder.JSONDecodeError:
                     continue
