@@ -147,6 +147,8 @@ if __name__ == "__main__":
         for line in process.stdout:
             line = line.decode("utf-8").strip()
 
+            output += line
+
             if line == "{":
                 depth += 1
             if line == "}":
@@ -158,10 +160,9 @@ if __name__ == "__main__":
                         update(data)
                         output = ""
                     except json.decoder.JSONDecodeError:
-                        logging.error("JSON decode error")
+                        logging.error("JSON decode error: " + output)
                         continue
-            else:
-                output += line
+
     else:
         logging.info("Running in host environment")
         while process.poll() is None:
