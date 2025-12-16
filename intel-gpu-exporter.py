@@ -1,6 +1,5 @@
 from prometheus_client import start_http_server, Gauge
 import os
-import sys
 import subprocess
 import json
 import logging
@@ -143,8 +142,10 @@ if __name__ == "__main__":
     output = ""
 
     if os.getenv("IS_DOCKER", False):
+        logging.info("Running in Docker environment")
         for line in process.stdout:
             line = line.decode("utf-8").strip()
+            logging.info("\"" + line + "\"")
             output += line
 
             try:
@@ -155,6 +156,7 @@ if __name__ == "__main__":
             except json.JSONDecodeError:
                 continue
     else:
+        logging.info("Running in host environment")
         while process.poll() is None:
             read = process.stdout.readline()
             output += read.decode("utf-8")
