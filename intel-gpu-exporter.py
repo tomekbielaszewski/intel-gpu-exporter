@@ -147,7 +147,8 @@ if __name__ == "__main__":
         for line in process.stdout:
             line = line.decode("utf-8").strip()
 
-            output += line
+            if line != "[":
+                output += line
 
             if line == "{":
                 depth += 1
@@ -159,6 +160,7 @@ if __name__ == "__main__":
                         logging.info(data)
                         update(data)
                         output = ""
+                        logging.info("Metrics updated")
                     except json.decoder.JSONDecodeError:
                         logging.error("JSON decode error: " + output)
                         continue
