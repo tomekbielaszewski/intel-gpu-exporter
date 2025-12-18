@@ -76,6 +76,7 @@ if __name__ == "__main__":
 
         if ',' in line and any(keyword in line for keyword in ['Freq', 'IRQ', 'RC6', 'Power']):
             header_line = line
+            continue
 
         if not header_line:
             continue
