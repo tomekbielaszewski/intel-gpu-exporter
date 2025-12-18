@@ -72,7 +72,7 @@ if __name__ == "__main__":
     columns = None
 
     for line in process.stdout:
-        logging.info(line)
+        # logging.info(line)
 
         if ',' in line and any(keyword in line for keyword in ['Freq', 'IRQ', 'RC6', 'Power']):
             header_line = line
@@ -91,7 +91,7 @@ if __name__ == "__main__":
             logging.error(f"Warning: Skipping malformed line (expected {len(columns)} values, got {len(values)})")
             continue
 
-        logging.info(f"{dict(zip(columns, values))}")
+        # logging.info(f"{dict(zip(columns, values))}")
         update(dict(zip(columns, values)))
 
     process.kill()
