@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from prometheus_client import start_http_server, Gauge
 import subprocess
 import logging
@@ -60,7 +61,10 @@ if __name__ == "__main__":
     cmd = "intel_gpu_top -c -s {}".format(int(15000))
 
     process = subprocess.Popen(
-        cmd.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE
+        cmd.split(),
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True
     )
 
     logging.info(cmd)
