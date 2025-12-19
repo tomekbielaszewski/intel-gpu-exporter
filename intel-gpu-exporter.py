@@ -58,7 +58,7 @@ if __name__ == "__main__":
     # intel_gpu_top - Display a top-like summary of Intel GPU usage
     # [-c]            Output CSV formatted data.
     # [-s <ms>]       Refresh period in milliseconds (default 1000ms).
-    cmd = "intel_gpu_top -c -s {}".format(int(15000))
+    cmd = "intel_gpu_top -c -s {}".format(int(5000))
 
     process = subprocess.Popen(
         cmd.split(),
