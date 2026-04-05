@@ -82,3 +82,16 @@ igpu_power_package 5.480595
 # TYPE igpu_rc6 gauge
 igpu_rc6 99.999993
 ```
+
+# Prometheus config example
+
+```yaml
+scrape_configs:
+  - job_name: "intel-gpu-exporter"
+    scrape_interval: 5s
+    static_configs:
+      - targets: [ 'intel-gpu-exporter:8080' ]
+        labels:
+          app: "intel-gpu-exporter"
+          host: "mysweethomelab"
+```
