@@ -8,13 +8,20 @@ RUN go mod download
 COPY main.go .
 RUN CGO_ENABLED=0 GOOS=linux go build -trimpath -ldflags="-s -w" -o intel-gpu-exporter .
 
-FROM docker.io/library/alpine:3
+FROM docker.io/library/debian:bookworm-slim
+
+ENV \
+    DEBCONF_NONINTERACTIVE_SEEN="true" \
+    DEBIAN_FRONTEND="noninteractive"
 
 RUN \
-    apk add --no-cache \
+    apt-get update \
+    && apt-get install --no-install-recommends -y \
         tini \
-        intel-gpu-tools
+        intel-gpu-tools \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /build/intel-gpu-exporter /usr/local/bin/intel-gpu-exporter
 
-ENTRYPOINT ["/sbin/tini", "--", "/usr/local/bin/intel-gpu-exporter"]
+ENTRYPOINT ["/usr/bin/tini", "--", "/usr/local/bin/intel-gpu-exporter"]
