@@ -8,7 +8,7 @@ RUN go mod download
 COPY main.go .
 RUN CGO_ENABLED=0 GOOS=linux go build -trimpath -ldflags="-s -w" -o intel-gpu-exporter .
 
-FROM docker.io/library/debian:bookworm-slim
+FROM docker.io/library/debian:trixie-slim
 
 ENV \
     DEBCONF_NONINTERACTIVE_SEEN="true" \
