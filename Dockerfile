@@ -24,4 +24,4 @@ RUN \
 
 COPY --from=builder /build/intel-gpu-exporter /usr/local/bin/intel-gpu-exporter
 
-ENTRYPOINT ["/usr/bin/tini", "--", "/usr/local/bin/intel-gpu-exporter"]
+ENTRYPOINT ["/usr/bin/tini", "-s", "--", "/usr/local/bin/intel-gpu-exporter"]
