@@ -1,38 +1,20 @@
-FROM docker.io/library/python:3.13-slim
+FROM docker.io/library/golang:1.26.1-alpine AS builder
 
-ENV \
-    DEBCONF_NONINTERACTIVE_SEEN="true" \
-    DEBIAN_FRONTEND="noninteractive" \
-    APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE="DontWarn"
+WORKDIR /build
 
-ENV \
-    PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1 \
-    PIP_ROOT_USER_ACTION=ignore \
-    PIP_NO_CACHE_DIR=1 \
-    PIP_DISABLE_PIP_VERSION_CHECK=1 \
-    PIP_BREAK_SYSTEM_PACKAGES=1 \
-    IS_DOCKER=True
+COPY go.mod go.sum ./
+RUN go mod download
 
-WORKDIR /app
+COPY main.go .
+RUN CGO_ENABLED=0 GOOS=linux go build -trimpath -ldflags="-s -w" -o intel-gpu-exporter .
 
-COPY . .
+FROM docker.io/library/alpine:3
 
 RUN \
-    apt-get update \
-    && \
-    apt-get install --no-install-recommends -y \
-        catatonit \
-        intel-gpu-tools \
-    && pip install --requirement requirements.txt \
-    && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
-    && apt-get autoremove -y \
-    && apt-get clean \
-    && rm -rf \
-        /tmp/* \
-        /var/lib/apt/lists/* \
-        /var/cache/apt/* \
-        /var/tmp/*
+    apk add --no-cache \
+        tini \
+        intel-gpu-tools
 
-ENTRYPOINT ["/usr/bin/catatonit", "--", "/usr/local/bin/python"]
-CMD ["/app/intel-gpu-exporter.py"]
+COPY --from=builder /build/intel-gpu-exporter /usr/local/bin/intel-gpu-exporter
+
+ENTRYPOINT ["/sbin/tini", "--", "/usr/local/bin/intel-gpu-exporter"]
