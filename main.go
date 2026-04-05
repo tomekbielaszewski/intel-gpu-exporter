@@ -55,11 +55,6 @@ var columnGauges = map[string]prometheus.Gauge{
 	"VECS %":  promauto.NewGauge(prometheus.GaugeOpts{Name: "igpu_engines_video_enhance_0_busy", Help: "VECS % - (Video Enhancement Engine) Utilization percentage (video post-processing, scaling, color conversion)"}),
 	"VECS se": promauto.NewGauge(prometheus.GaugeOpts{Name: "igpu_engines_video_enhance_0_sema", Help: "VECS se - (Video Enhancement Engine) Semaphore wait time"}),
 	"VECS wa": promauto.NewGauge(prometheus.GaugeOpts{Name: "igpu_engines_video_enhance_0_wait", Help: "VECS wa - (Video Enhancement Engine) Wait time"}),
-
-	// Additional columns present in intel_gpu_top output but missing from original Python exporter.
-	"Period ms":        promauto.NewGauge(prometheus.GaugeOpts{Name: "igpu_period", Help: "Period ms - Actual sampling period in milliseconds"}),
-	"IMC reads MiB/s":  promauto.NewGauge(prometheus.GaugeOpts{Name: "igpu_imc_bandwidth_reads", Help: "IMC reads MiB/s - Integrated Memory Controller read bandwidth"}),
-	"IMC writes MiB/s": promauto.NewGauge(prometheus.GaugeOpts{Name: "igpu_imc_bandwidth_writes", Help: "IMC writes MiB/s - Integrated Memory Controller write bandwidth"}),
 }
 
 // headerKeywords are substrings used to detect the CSV header line.
