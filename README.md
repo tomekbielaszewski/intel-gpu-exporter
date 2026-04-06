@@ -4,7 +4,7 @@ Get metrics from Intel GPUs
 
 ## Deployment
 
-Runs on port 8080. Wraps `intel_gpu_top` and exposes its output as Prometheus metrics.
+Runs on port 8080. Wraps `intel_gpu_top` and exposes its CSV output as Prometheus metrics.
 
 ### Docker Compose
 
@@ -95,3 +95,9 @@ scrape_configs:
           app: "intel-gpu-exporter"
           host: "mysweethomelab"
 ```
+
+# Grafana Dashboard
+
+[Available here](./examples/grafana-dashboard.json)
+
+![img.png](examples/img.png)
